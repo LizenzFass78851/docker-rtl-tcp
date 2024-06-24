@@ -4,7 +4,7 @@ FROM arm32v7/ubuntu
 RUN apt-get update && apt-get install git cmake pkg-config libusb-1.0-0-dev -y
 
 # Get driver repository
-RUN git clone git://git.osmocom.org/rtl-sdr.git
+RUN git clone https://github.com/osmocom/rtl-sdr
 
 # Compile drivers
 RUN cd rtl-sdr && \
