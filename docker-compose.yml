@@ -1,8 +1,12 @@
-version: "3.7"
+fversion: "3.7"
 services:
   rtl-server:
-    build: .
-    restart: always      
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ghcr.io/lizenzfass78851/docker-rtl-tcp:latest
+    container_name: rtl-tcp
+    restart: always
     ports:
      - "1234:1234"
     privileged: true
