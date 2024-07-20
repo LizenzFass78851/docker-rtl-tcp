@@ -1,0 +1,38 @@
+FROM alpine:3.22 AS builder
+
+# Install packages
+RUN apk add --no-cache \
+  libusb-dev \
+    git cmake pkgconf \
+    make gcc g++
+
+# Get driver repository
+RUN git clone https://github.com/osmocom/rtl-sdr /workspace
+
+# Compile drivers
+RUN cd /workspace && \
+        mkdir build && \
+        cd build && \
+        cmake ../ -DINSTALL_UDEV_RULES=ON && \
+        make && \
+        make install DESTDIR="$PWD/install"
+
+FROM alpine:3.22
+
+# Install packages
+RUN apk add --no-cache \
+  libusb-dev
+
+# Copy built files from builder
+COPY --from=builder /workspace/build/install/usr/local/bin/* /usr/local/bin/
+COPY --from=builder /workspace/build/install/usr/local/include/* /usr/local/include/
+COPY --from=builder /workspace/build/install/usr/local/lib/* /usr/local/lib/
+
+# Ensure rtl_tcp is executable and Install the drivers
+RUN chmod +x /usr/local/bin/rtl_tcp && \
+  ldconfig /usr/local/bin/ && \
+  ldconfig /usr/local/include/ && \
+  ldconfig /usr/local/lib/
+
+# Execute RTL server
+ENTRYPOINT ["rtl_tcp", "-a", "0.0.0.0"]
