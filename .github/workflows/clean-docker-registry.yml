@@ -7,14 +7,13 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  REPO_NAME: ${{ github.event.repository.name }}
 
 jobs:
   clean_docker_registry:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
+      packages: delete
 
     steps:
       - name: Login to GitHub Container Registry
@@ -25,8 +24,11 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ github.token }}
 
-      - name: Purge all untagged images
-        uses: minish144/delete-untagged-action@v2
+      - name: Delete all containers from repository without tags
+        uses: Chizkiyahu/delete-untagged-ghcr-action@v3      
         with:
-          github-token: ${{ github.token }}
-          package-name: ${{ env.REPO_NAME }}
+          token: ${{ github.token }}
+          repository_owner: ${{ github.repository_owner }}
+          repository: ${{ github.repository }}
+          untagged_only: true
+
