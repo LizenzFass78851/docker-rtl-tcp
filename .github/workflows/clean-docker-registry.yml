@@ -16,6 +16,18 @@ jobs:
       packages: write
 
     steps:
+      - name: Check owner type
+        id: check_owner
+        run: |
+          curl -s -H "Authorization: token ${{ env.GITHUB_TOKEN }}" \
+          https://api.github.com/users/${{ github.repository_owner }} \
+          | jq -r '.type' > owner_type.txt
+          OWNER_TYPE=$(cat owner_type.txt) 
+          echo "OWNER_TYPE=$OWNER_TYPE" >> $GITHUB_OUTPUT
+          echo "Owner type is $OWNER_TYPE"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      
       - name: Login to GitHub Container Registry
         id: ghcr
         uses: docker/login-action@v3
@@ -31,4 +43,4 @@ jobs:
           repository_owner: ${{ github.repository_owner }}
           repository: ${{ github.repository }}
           untagged_only: true
-
+          owner_type: ${{ steps.check_owner.outputs.OWNER_TYPE }}
