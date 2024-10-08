@@ -21,7 +21,7 @@ jobs:
         run: |
           curl -s -H "Authorization: token ${{ env.GITHUB_TOKEN }}" \
           https://api.github.com/users/${{ github.repository_owner }} \
-          | jq -r '.type' > owner_type.txt
+          | jq -r '.type' | tr '[:upper:]' '[:lower:]' > owner_type.txt
           OWNER_TYPE=$(cat owner_type.txt) 
           echo "OWNER_TYPE=$OWNER_TYPE" >> $GITHUB_OUTPUT
           echo "Owner type is $OWNER_TYPE"
