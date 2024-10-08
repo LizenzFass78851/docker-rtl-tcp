@@ -25,11 +25,8 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ github.token }}
 
-      - name: Purge outdated images
-        uses: actions/delete-package-versions@v5
+      - name: Purge all untagged images
+        uses: minish144/delete-untagged-action@v2
         with:
-          package-name: '${{ env.REPO_NAME }}'
-          package-type: 'container'
-          min-versions-to-keep: 0
-          delete-only-untagged-versions: 'true'
-          token: ${{ github.token }}
+          github-token: ${{ github.token }}
+          package-name: ${{ env.REPO_NAME }}
