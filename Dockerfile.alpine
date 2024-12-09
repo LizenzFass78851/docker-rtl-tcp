@@ -1,4 +1,4 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 # Install packages
 RUN apk add --no-cache \
@@ -17,7 +17,7 @@ RUN cd /workspace && \
         make && \
         make install DESTDIR="$PWD/install"
 
-FROM alpine:3.20
+FROM alpine:3.21
 
 # Install packages
 RUN apk add --no-cache \
