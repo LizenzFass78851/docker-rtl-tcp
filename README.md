@@ -22,8 +22,7 @@ echo -e 'blacklist dvb_usb_rtl28xxu\nblacklist rtl2832\nblacklist rtl2830' | tee
 
 - Additionally, we need to set the correct permissions to the modules for allowing TCP messages. Place the `rtl_sdr.rules` file into your host `/etc/udev/rules.d/` folder:
 ```bash
-GIT_REPO_AND_BRANCH=LizenzFass78851/docker-rtl-tcp/master
-curl https://raw.githubusercontent.com/$GIT_REPO_AND_BRANCH/files/rtl_sdr.rules \
+curl https://raw.githubusercontent.com/LizenzFass78851/docker-rtl-tcp/master/files/rtl_sdr.rules \
   -o /etc/udev/rules.d/rtl_sdr.rules
 ```
 
@@ -31,13 +30,12 @@ curl https://raw.githubusercontent.com/$GIT_REPO_AND_BRANCH/files/rtl_sdr.rules 
 
 - Reboot your Device, this should only have to be done once.
 
-- Run the container using the `docker compose` command included here:
+- To run with docker-compose
 ```bash
-mkdir ./rtl-tcp && cd ./rtl-tcp
-GIT_REPO_AND_BRANCH=LizenzFass78851/docker-rtl-tcp/master
-curl https://raw.githubusercontent.com/$GIT_REPO_AND_BRANCH/docker-compose.yml \
-  -o ./docker-compose.yml
-docker compose up -d
+git clone https://github.com/LizenzFass78851/docker-rtl-tcp rtl-tcp --single-branch --depth 1
+cd rtl-tcp
+nano docker-compose.yml # if you want to override any default value
+docker-compose up -d
 ```
 
 - The server is listening on port `1234`, connect to it using your RTL-SDR client (i.e. SDRSharp) and the IP of the Device.
