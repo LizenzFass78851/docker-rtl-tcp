@@ -35,7 +35,7 @@ curl https://raw.githubusercontent.com/LizenzFass78851/docker-rtl-tcp/master/fil
 git clone https://github.com/LizenzFass78851/docker-rtl-tcp rtl-tcp --single-branch --depth 1
 cd rtl-tcp
 nano docker-compose.yml # if you want to override any default value
-docker-compose up -d
+docker compose up -d
 ```
 
 - The server is listening on port `1234`, connect to it using your RTL-SDR client (i.e. SDRSharp) and the IP of the Device.
