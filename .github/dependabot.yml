@@ -11,6 +11,6 @@ updates:
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
-      interval: "monthly"
-      time: "15:00"
- 
+      interval: "weekly"
+      day: saturday
+      time: "09:00"
