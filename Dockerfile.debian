@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim AS builder
+FROM debian:trixie-slim AS builder
 
 # Install packages
 RUN apt-get update -qq && apt-get dist-upgrade -yy && \
@@ -17,7 +17,7 @@ RUN cd /workspace && \
         cmake ../ -DINSTALL_UDEV_RULES=ON && \
         make
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 # Install packages
 RUN apt-get update -qq && apt-get dist-upgrade -yy && \
