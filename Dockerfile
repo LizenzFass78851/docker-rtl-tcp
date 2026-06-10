@@ -1,4 +1,4 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
 # Install packages
 RUN apk add --no-cache \
@@ -15,7 +15,7 @@ RUN     cmake ../ -DINSTALL_UDEV_RULES=ON && \
         make && \
         make install DESTDIR="$PWD/install"
 
-FROM alpine:3.23
+FROM alpine:3.24
 
 # Install packages
 RUN apk add --no-cache \
