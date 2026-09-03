@@ -146,7 +146,7 @@ jobs:
         run: |
           mkdir -p /tmp/digests
           digest_docker="${{ steps.prebuild.outputs.digest }}"
-          [ -n "$digest_docker" ] && echo "${digest_docker}" | tee "/tmp/digests/${digest_docker#sha256:}.txt"
+          [ -n "$digest_docker" ] && touch "/tmp/digests/${digest_docker#sha256:}"
 
       - name: Upload digest
         uses: actions/upload-artifact@v7
@@ -155,6 +155,7 @@ jobs:
           path: /tmp/digests/*
           if-no-files-found: error
           retention-days: 1
+          compression-level: 0
 
   merge_manifests:
     needs: [prepare_matrix, build_matrix]
@@ -201,8 +202,8 @@ jobs:
 
           SOURCES=()
 
-          for digest_file in *.txt; do
-            digest="$(cat "$digest_file")"
+          for digest_file in $(printf 'sha256:%s ' *); do
+            digest="$digest_file"
             SOURCES+=("${IMAGE}@${digest}")
           done
 
