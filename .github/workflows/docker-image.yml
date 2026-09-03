@@ -27,12 +27,8 @@ jobs:
         id: matrix
         run: |
           arch="
-          amd64;linux/amd64
-          x86;linux/386
-          arm64;linux/arm64
-          armhfv7;linux/arm/v7
-          armhfv6;linux/arm/v6
-          riscv64;linux/riscv64
+          amd64;linux/amd64,linux/386
+          arm64;linux/arm64,linux/arm/v7,linux/arm/v6,linux/riscv64
           "
 
           tag="
@@ -88,7 +84,7 @@ jobs:
           ref: ${{ matrix.tag.target }}
 
       - name: Setup QEMU
-        if: ${{ matrix.arch.cpu == 'riscv64' }}
+        if: ${{ contains(matrix.arch.platform, 'linux/riscv64') }}
         uses: docker/setup-qemu-action@v4
 
       - &buildx-setup
